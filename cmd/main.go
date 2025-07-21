@@ -1,32 +1,27 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/laleman11/go-practices-lab/internal/datastructures"
 )
 
 func main() {
-	stack := datastructures.NewStack[int]()
-	stack.Push(12)
-	stack.Push(32)
+	queue := datastructures.NewLinkedList[int]()
+	queue.Add(10)
+	queue.Add(20)
+	queue.Add(50)
+	queue.Prepend(1)
+	queue.Prepend(-1)
+	queue.Delete(10)
+	_, exist := queue.Find(10)
+	_, exist2 := queue.Find(1)
+	size := queue.Size()
+	s := queue.ToSlice()
 
-	for i := 0; i < 3; i++ {
-		resp, err := stack.Pop()
+	println(queue)
+	println(size)
+	println(exist)
+	println(exist2)
+	println(s)
+	queue.Print()
 
-		if err == nil {
-			fmt.Printf("the last element deleted is %d \n", resp)
-		} else {
-			fmt.Printf("⚠️ Error: %s\n", err)
-		}
-	}
-	resp, err := stack.Peek()
-	if err != nil {
-		fmt.Printf("⚠️ Error: %s\n", err)
-	} else {
-		fmt.Printf("🔍 the last element in the list is : %d\n", resp)
-	}
-
-	fmt.Printf("the size in the stack is: %d \n", stack.Size())
-	fmt.Println("the stack is empty: ", stack.IsEmpty())
 }
