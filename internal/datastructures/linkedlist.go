@@ -100,12 +100,16 @@ func (l *LinkedList[T]) IsEmpty() bool {
 }
 
 func (l *LinkedList[T]) Print() {
-	l.head.print()
+	if l.head != nil {
+		l.head.print()
+	} else {
+		println("empty list")
+	}
 }
 
 func (n *Node[T]) print() {
 	if n.next == nil {
-		print(n.value, "-> nil")
+		println(n.value, "-> nil")
 	} else {
 		print(n.value, " -> ")
 		n.next.print()
@@ -126,5 +130,59 @@ func (n *Node[T]) getSlice(actualSlice []T) []T {
 	} else {
 		actualSlice = append(actualSlice, n.value)
 		return append(n.next.getSlice(actualSlice))
+	}
+}
+
+func (l *LinkedList[T]) InsertAfter(value T, newValue T) {
+	if l.head != nil {
+		l.head.insertAfter(value, newValue)
+	}
+}
+
+func (n *Node[T]) insertAfter(value T, newValue T) {
+	if n.next == nil {
+		if n.value == value {
+			newNode := NewNode(newValue)
+			n.next = newNode
+		}
+	} else {
+		if n.value == value {
+			newNode := NewNode(newValue)
+			newNode.next = n.next
+			n.next = newNode
+		} else {
+			n.next.insertAfter(value, newValue)
+		}
+	}
+}
+
+func (l *LinkedList[T]) Reverse() {
+	l2 := NewLinkedList[T]()
+	if l.head != nil {
+		actualNode := l.head.removeLast(nil)
+		l2.head = actualNode
+		if l.head.next != nil {
+			for l.head != nil {
+				actualNode.next = l.head.removeLast(actualNode)
+				actualNode = actualNode.next
+				if actualNode == l.head {
+					l.head = nil
+				}
+			}
+		}
+	}
+
+	l.head = l2.head
+}
+
+func (n *Node[T]) removeLast(nodeBefore *Node[T]) *Node[T] {
+	if n.next == nil {
+		response := n
+		if nodeBefore != nil {
+			nodeBefore.next = nil
+		}
+		return response
+	} else {
+		return n.next.removeLast(n)
 	}
 }
