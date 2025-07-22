@@ -156,7 +156,7 @@ func (n *Node[T]) insertAfter(value T, newValue T) {
 	}
 }
 
-func (l *LinkedList[T]) Reverse() {
+func (l *LinkedList[T]) ReverseRecursive() {
 	l2 := NewLinkedList[T]()
 	if l.head != nil {
 		actualNode := l.head.removeLast(nil)
@@ -173,6 +173,22 @@ func (l *LinkedList[T]) Reverse() {
 	}
 
 	l.head = l2.head
+}
+
+func (l *LinkedList[T]) Reverse() {
+	var prev *Node[T]
+	current := l.head
+	next := current.next
+
+	for current != nil {
+		current.next = prev
+		prev = current
+		current = next
+		if current != nil {
+			next = next.next
+		}
+	}
+	l.head = prev
 }
 
 func (n *Node[T]) removeLast(nodeBefore *Node[T]) *Node[T] {
